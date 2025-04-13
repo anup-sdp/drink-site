@@ -1,0 +1,56 @@
+body{
+	width: 90%;
+	margin: 8px auto;
+	background-color: WhiteSmoke;
+}
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: skyblue;
+	color: black;
+	padding: 16px;
+}
+
+.input-group{
+	width: 50%;
+	margin: auto;
+}
+
+#searchResults img{
+	width: 90%;
+	border-radius: 8px;
+}
+
+#modal-body img{
+	width: 90%;
+	border-radius: 6%;
+	margin: 10px auto;
+	display: block;
+}
+
+.product-card{
+	display: flex;
+	flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    padding: 12px;	
+}
+
+.btn-group{
+	width: 80%;
+}
+
+#group-list .card{
+	align-items: center; /* to prevents stretching */
+}
+
+#group-list img{
+	width: 70px;
+	height: 70px;
+	border-radius: 8px;
+	margin: 0 10px;
+}
