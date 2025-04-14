@@ -3,13 +3,19 @@
 let allDrinks = [];
 let cartGroup = [];
 
+window.addEventListener('hide.bs.modal', () => {
+    if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+    }
+});
+
 function showDrinksCards(){
 	const searchResults  = document.getElementById("searchResults");
 	searchResults.innerHTML="";
 	allDrinks.forEach(e=> {
 		let div = document.createElement("div");
-		div.classList += ("col-sm-12 col-md-6 col-lg-4 mb-3");				
-		div.innerHTML = `					
+		div.classList += ("col-sm-12 col-md-6 col-lg-4 mb-3");
+		div.innerHTML = `
 			<div class="card product-card">
 				<img src="${e["strDrinkThumb"]}" alt="drink-pic">
 				<p>name: "${e["strDrink"]}"</p>
@@ -35,17 +41,17 @@ function showDrinksCards(){
 
 function initialDrinks(){
 	//const defaultDrinksUrl = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Ordinary_Drink";
-	//const defaultDrinksUrl = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Non_Alcoholic"; 
+	//const defaultDrinksUrl = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Non_Alcoholic";
 	// www.thecocktaildb.com/api/json/v1/1/search.php?f=a // set as initial drinks
 	fetch("https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a").then(res=> res.json()).then(data=>{
-		//console.log(data);			
+		//console.log(data);
 		allDrinks = data["drinks"];
-		console.log(allDrinks);			
+		console.log(allDrinks);
 		if(data["drinks"]==null){
 			console.log("No drinks found!");
 			document.getElementById("searchResults").innerHTML="<p>No drinks found for this search!</p>";
 			return;
-		}	
+		}
 		showDrinksCards();
 	}).catch((err)=>{
 		console.log(err);
@@ -73,34 +79,36 @@ function addToGroup(elem){
 
 function showDrinkDetails(drinkId){
 	// search full cocktail details by id
-	const drinkUrl = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkId}`; 
+	const drinkUrl = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkId}`;
 	fetch(drinkUrl).then(res=> res.json()).then(data=>{
-		//console.log(data);			
+		//console.log(data);
 		let drink = data["drinks"];
 		console.log(drink);
 		if(data["drinks"]==null){
 			console.log("No drinks found by this id!");
 			//document.getElementById("searchResults").innerHTML="<p>No drinks found for this search!</p>";
 			return;
-		}	
+		}
 		showModal(drink[0]);
 	}).catch((err)=>{
 		console.log(err);
 	});
 }
 
-function showModal(drink){	
+function showModal(drink){
 	let modalBody = document.getElementById("modal-body");
+
 	modalBody.innerHTML = `
-		<img src="${drink.strDrinkThumb}" alt="drink-pic"> 
+		<img src="${drink.strDrinkThumb}" alt="drink-pic">
 		<p>Drink id: ${drink.idDrink}</p>
-		<p>name: ${drink.strDrink}</p>		
+		<p>name: ${drink.strDrink}</p>
 		<p>category: ${drink.strCategory}</p>
 		<p>alcoholic: ${drink.strAlcoholic}</p>
 		<p>instructions: ${drink.strInstructions}</p>
 	`; // alternate format: drink["strInstructions"]
 	let myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-	myModal.show();	
+
+	myModal.show();
 }
 
 function showDrinkGroup(){
@@ -120,23 +128,23 @@ function showDrinkGroup(){
 		`;
 		groupList.appendChild(div);
 		groupListCount.innerHTML = `<h5>Group List: (${cartGroup.length})</h5>`;
-	});	
+	});
 }
 
 
 document.getElementById('searchButton').addEventListener('click', function(){
 	const searchText = document.getElementById('searchInput').value.trim();
-	if (searchText == '') {return;}	
+	if (searchText == '') {return;}
 	if(searchText.length==1){
 		fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchText}`).then(res=> res.json()).then(data=>{ // search by first letter
-			//console.log(data);			
+			//console.log(data);
 			allDrinks = data["drinks"];
-			console.log(allDrinks);			
+			console.log(allDrinks);
 			if(data["drinks"]==null){
 				console.log("No drinks found for search.");
 				document.getElementById("searchResults").innerHTML="<p>No drinks found for this search!</p>";
 				return;
-			}	
+			}
 			showDrinksCards();
 		}).catch((err)=>{
 			console.log(err);
@@ -144,17 +152,17 @@ document.getElementById('searchButton').addEventListener('click', function(){
 	}
 	else{
 		fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchText}`).then(res=> res.json()).then(data=>{ // Search cocktail by name, strIngredient
-			//console.log(data);			
+			//console.log(data);
 			allDrinks = data["drinks"];
-			console.log(allDrinks);			
+			console.log(allDrinks);
 			if(data["drinks"]==null){
 				console.log("No drinks found!");
 				document.getElementById("searchResults").innerHTML="<p>No drinks found for this search!</p>";
 				return;
-			}	
+			}
 			showDrinksCards();
 		}).catch((err)=>{
 			console.log(err);
 		});
-	}	
+	}
 });
